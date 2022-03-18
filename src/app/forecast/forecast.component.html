@@ -1,0 +1,63 @@
+<div class=" w-full h-screen p-6 flex flex-col  items-center">
+
+
+    <div class="flex flex-col w-full sm:w-max">
+        <div class="flex flex-col sm:flex-row justify-center w-full">
+            <div class="w-full ">
+                <label for="postalCode" class="sr-only">Kod pocztowy</label>
+                <input #postalCodeInput [textMask]="{ mask: mask }" [(ngModel)]="postalCode" id="email-address"
+                    type="text"
+                    class="rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Kod pocztowy">
+            </div>
+            <button (click)="searchCityByPostalCode(postalCode)"
+                class=" w-full sm:w-auto sm:ml-2 sm:my-0 my-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Search</button>
+
+        </div>
+        <div class="w-full my-5 flex flex-col sm:flex-row">
+            <div>
+                <span class="align-middle">{{voivodship}}</span>
+            </div>
+            <div>
+                <span class="align-middle sm:ml-5">{{forecast[0].Date | date}}</span>
+                <span class="mx-3">-</span>
+                <span class="align-middle">{{forecast[4].Date | date}}</span>
+            </div>
+        </div>
+        <ng-container *ngIf="forecast.length !== 0; else noData">
+            <div *ngFor="let el of forecast"
+                class=" my-2 p-3 gap-2 border-2 border-indigo-600 rounded flex flex-row items-center justify-between sm:flex-row">
+                <div class="flex flex-col sm:flex-row sm:items-center">
+                    <div class="flex flex-col sm:w-32">
+                        <span class="text-lg font-bold">{{dataParse(el?.Date).weekDay}}</span>
+                        <span>{{dataParse(el?.Date).date}}</span>
+                    </div>
+                    <div class="sm:w-32 ">
+                        <span class="sm:text-xl"> {{el?.Day.IconPhrase}}</span>
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col sm:flex-row items-center justify-end">
+
+                    <div class="flex flex-row sm:mx-5">
+                        <img class="w-16 h-16 sm:h-16 sm:w-16" [src]="(getWeatherIcon(el?.Day.Icon))" alt="">
+
+                    </div>
+                    <div class="sm:w-40">
+                        <span
+                            class="text-2xl sm:text-5xl after:content-['\00B0']">{{el?.Temperature.Maximum.Value}}</span>
+                        <span class=" text-gray-500 after:content-['\00B0']">/
+                            {{el?.Temperature.Minimum.Value}}</span>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+
+
+    </div>
+    <ng-template #noData>
+        <div class="h-3/6">Nieprawidłowy kod pocztowy</div>
+    </ng-template>
+</div>
